@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Notatki z lekcji</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;600&display=swap" rel="stylesheet">
+</head>
+<body>
+<!-- Logowanie -->
+<div id="login-container" class="card">
+    <h2>🔒 Dostęp chroniony</h2>
+    <p class="subtitle">Zaloguj się, aby zobaczyć notatki</p>
+    <div class="input-group">
+        <input type="text" id="login" placeholder="Login">
+    </div>
+    <div class="input-group">
+        <input type="password" id="password" placeholder="Hasło">
+    </div>
+    <button onclick="login()">Zaloguj</button>
+    <p id="error-message"></p>
+</div>
+
+<!-- Notatki -->
+<div id="notes-container" class="hidden">
+    <header>
+        <h1>Notatki i materiały zawodowe</h1>
+        <button class="logout-btn" onclick="logout()">Wyloguj</button>
+    </header>
+
+    <main class="notes-grid">
+        <div class="note-card">
+            <h3>Systemy Baz Danych</h3>
+            <p>Polecenia #1</p>
+            <a href="Polecenia%20%231.pdf" target="_blank">Otwórz</a>
+            <p>Polecenia #2</p>
+            <a href="Polecenia%20%232.pdf" target="_blank">Otwórz</a>
+        </div>
+        <div class="note-card">
+            <h3>Tworzenie stron i aplikacji</h3>
+            <p>Notatki do dnia 5.10.2025</p>
+            <a href="Tworzenie%20stron%20i%20aplikacji.pdf" target="_blank">Otwórz</a>
+        </div>
+        <div class="note-card">
+            <h3>Bazy danych SQL</h3>
+            <p>Auta od Pana Andrzeja</p>
+            <a href="auta.sql" download="auta.sql">Pobierz</a>
+            <p>Bazy od Pana Davida</p>
+            <a href="bike_store.sql" download="bike_store.sql">Pobierz</a>
+            <a href="sklep.sql" download="sklep.sql">Pobierz</a>
+            <a href="uczelnia.sql" download="uczelnia.sql">Pobierz</a>
+        </div>
+        <div class="note-card">
+            <h3>Kody do programów</h3>
+            <p>Galeria Miejsc Ciekawych</p>
+            <a href="galeria_miejsc.zip" download="galeria_miejsc.zip">Pobierz</a>
+            <p>Przyciski</p>
+            <a href="Przyciski(js).zip" download="przyciski.zip">Pobierz</a>
+        </div>
+    </main>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h2>YOURE IN!</h2>
+    <% if (info) { %>
+            <div">
+                <%= info %>
+            </div>
+    <% } %>
+    
+    <!-- QUESTION: Is it safe to do it like that?  -->
+    <% if(file){ %>
+        <a href="<%= file %>">Plik</a>
+    <% }%>
+</body>
+</html>

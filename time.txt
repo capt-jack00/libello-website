@@ -1,0 +1,3 @@
+Oct-6-2025 - 1h spent on project: Coding and establishing safe connetion to the database hosted on localhost using node.js mysql package. 
+Oct-7-2025 - 1.5 spent on project: Fixing issues with node.js - pobably will need to start all over again, no features or code updates.
+Oct-8-2025 - 2h spent on project: Fixing issues and enchancing the code, added ability to display different data for different users. 
