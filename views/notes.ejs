@@ -4,18 +4,41 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+
+    <!-- bootstap links -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
 </head>
+<style>
+    body{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        flex-direction: column;
+    }
+    .btn{
+        margin: 10px;
+    }
+</style>
 <body>
     <h2>YOURE IN!</h2>
-    <% if (info) { %>
-            <div">
-                <%= info %>
-            </div>
+    <% if (isAdmin) { %>
+        <div>
+            You're an Admin <br>
+            <form action="/adminpanel" method="get">
+                <button class="btn btn-primary">Admin panel</button>
+            </form>
+        </div>
+    <% } else { %>
+        <div>
+            You're not an Admin
+        </div>
     <% } %>
-    
-    <!-- QUESTION: Is it safe to do it like that?  -->
-    <% if(file){ %>
-        <a href="<%= file %>">Plik</a>
-    <% }%>
+
+    <form action="/logout" method="get">
+        <button class="btn btn-danger">Log out</button>
+    </form>
+
 </body>
 </html>

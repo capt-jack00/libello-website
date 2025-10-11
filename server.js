@@ -15,7 +15,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.set('views', __dirname + '/views');
 
-// RENDERS
+// NON-SECURE RENDERS
 app.get("/", (req, res) => {
   res.render("login.ejs");
 });
@@ -24,18 +24,25 @@ app.get("/login", (req, res) => {
     res.render("login.ejs");
 });
 
-app.get("/notes", (req, res) => {
-  res.render("notes.ejs");
-});
-
 // SESSION
 app.use(session({
     secret: process.env.SESSION_SECRET,
     resave: false,
     saveUninitialized: false,
-    cookie: { maxAge: 1000 * 60 * 1}
+    cookie: { maxAge: 1000 * 60 * 60}
     }
 ));
+
+// SECURED RENDERS
+app.get('/logout', (req, res) => {
+  req.session.destroy( err => {
+    if(err){
+      console.log("Session destruction error: " + err);
+      return res.redirect("/");
+    }
+    res.redirect("/login")
+  });
+});
 
 app.post("/login", (req, res) => {
   const username = req.body.username;
@@ -55,11 +62,17 @@ app.post("/login", (req, res) => {
 
         if(storedPassword === password){
           if(isAdmin == 1){
-            res.render("notes.ejs", {info: "You're an admin", file: "plik.pdf"});
+            res.render("notes.ejs", {isAdmin: true, file: "plik.pdf"});
+            // console.log(req.session);
           }
           else{
-            res.render("notes.ejs", {info: "You're not an admin"});
+            res.render("notes.ejs", {isAdmin: false, file: "There's no file to display"});
           }
+
+          req.session.user = {
+            username: user.username,
+            role: user.isAdmin
+          };
         }
         else{
           res.render("login.ejs", { error: "Password incorrect" });
@@ -79,6 +92,29 @@ app.post("/login", (req, res) => {
     return res.status(500).send("Internal server error");
   }
 });
+
+//TODO: Add some way to inform user that he needs to be logged in and have admin priviliegs to view this site
+app.get("/adminpanel", (req, res) => {
+  if(req.session.user && req.session.user.role === 1){
+    res.render("adminpanel.ejs");
+  }
+  else{
+    res.redirect("/login")
+  }
+});
+
+
+// TODO: Make it work
+// app.get("/notes", (req, res) => {
+//   const isAdmin = req.query.isAdmin;
+//   if(req.session.user){
+//     res.render("notes.ejs", {isAdmin});
+//   }
+//   else{
+//     res.redirect("/login")
+//   }
+// });
+
 
 // DATABASE
 let con = mysql.createPool({
