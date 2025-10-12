@@ -1,5 +1,4 @@
-//TODO: Check if the code is properly secured, if not code a automatic logout mechanism to increase the seciurity. 
-// Also add additional seciurity mechanism which will block the account after specified ammount of failed login attempts.  
+//TODO: Also add additional seciurity mechanism which will block the account after specified ammount of failed login attempts.  
 
 const express = require('express');
 const session = require('express-session');
@@ -17,11 +16,11 @@ app.set('views', __dirname + '/views');
 
 // NON-SECURE RENDERS
 app.get("/", (req, res) => {
-  res.render("login.ejs");
+  res.redirect("/login");
 });
 
 app.get("/login", (req, res) => {
-    res.render("login.ejs");
+  res.render("login.ejs");
 });
 
 // SESSION
@@ -96,7 +95,17 @@ app.post("/login", (req, res) => {
 //TODO: Add some way to inform user that he needs to be logged in and have admin priviliegs to view this site
 app.get("/adminpanel", (req, res) => {
   if(req.session.user && req.session.user.role === 1){
-    res.render("adminpanel.ejs");
+    con.query("SELECT * FROM uzytkownicy", (err, result) => {
+      if(err){
+        console.log(err);
+        return;
+      }
+
+      res.render("adminpanel.ejs", {users: result})
+    });
+
+    // const [usersAdminQuery] = con.query("SELECT * FROM uzytkownicy;");
+    // res.render("adminpanel.ejs", {users: result});
   }
   else{
     res.redirect("/login")

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,9 +9,73 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
 </head>
+<style>
+    body{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+    }
+
+    .container{
+        display: flex;
+        align-items: center;
+        padding: 50px;
+        height: 100vh;
+        flex-direction: column;
+        margin: 0;
+    }
+
+    h4{
+        margin-bottom: 70px;
+    }
+
+    tr{
+        border-bottom: 1px solid black;
+    }
+
+    th{
+        padding: 10px;
+        padding-bottom: 1px;
+        padding-top: 1px;
+    }
+
+</style>
 <body>
     <!-- TODO: Add admin panel features like: adding users, disabling accounts, reseting passwords ect. -->
     <!-- TODO: Adding users has to be done with use of bcrypt to encrypt passwords -->
-    <h2>Admin panel</h2>
+    <div class="container">
+        <b><h2>Panel administratora</h2></b> 
+        <h4>Zarządzaj użytkownikami</h4>
+
+        <table>
+            <tr>
+                <th>Nazwa użytkownika</th>
+                <th>Klasa</th>
+                <th>Kierunek</th>
+                <th>Admin</th>
+            </tr>
+            <% users.forEach(u => { %>
+                <tr>
+                    <th> <%= u.username %></th>
+                    <th> <%= u.class %></th>
+                    <!-- TODO: Clean up the code -->
+                    <% if(u.course === 1){ %>
+                        <th>Informatyk</th>
+                    <% } %>
+                    <% if(u.course === 3){ %>
+                        <th>Logistyk</th>
+                    <% } %>
+                    
+                    <% if(u.isAdmin === 1) { %>
+                        <th>Tak</th>
+                    <% } %>
+                    <% if(u.isAdmin === 0) { %>
+                        <th>Nie</th>
+                    <% } %>
+                </tr>
+            <% }) %>
+        </table>
+    </div>
 </body>
 </html>
