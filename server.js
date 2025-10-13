@@ -8,6 +8,8 @@ const bcrypt = require('bcrypt');
 const bodyParser = require('body-parser');
 const app = express();
 const port = 8080;
+let loginAttempt;
+const saltRounds = 10;
 const debugsql = "SELECT * FROM uzytkownicy;"
 
 app.use(bodyParser.json());
@@ -53,7 +55,7 @@ app.post("/login", (req, res) => {
         console.log(err);
         return;
       }
-
+      
       if(result.length > 0){
       const user = result[0];
       const storedPassword = user.password;
@@ -112,6 +114,61 @@ app.get("/adminpanel", (req, res) => {
   }
 });
 
+app.post("/adminpanel", (req, res) => {
+  const username = req.body.username;
+  const password = req.body.password;
+  const classa = req.body.classa;
+  const course = req.body.course; 
+
+  if (!username || !password || !classa || !course) {
+    con.query("SELECT * FROM uzytkownicy", (err, result) => {
+      if(err){
+        console.log(err);
+        return;
+      }
+      
+      return res.render("adminpanel.ejs", {users: result, error: "Wszystkie pola muszą być wypełnione!"});
+    }); 
+  }
+
+  try{
+    const result = con.query("SELECT * FROM uzytkownicy WHERE username = ?;", [username], (err, result) => {
+      if(err){
+        console.log(err);
+      }
+
+      if(result.length > 0){
+        con.query("SELECT * FROM uzytkownicy", (err, result) => {
+          if(err){
+            console.log(err);
+            return;
+          }
+
+          res.render("adminpanel.ejs", {users: result, error: "Użytkownik " + username + " już istnieje!"})
+        });
+      }
+      else{
+        const hashedPassword = bcrypt.hash(password, saltRounds, (err, hash) => {
+          if(err){
+            console.log(err);
+          }
+
+          const registerNewUser = con.query("INSERT INTO uzytkownicy (username, password, class, course, isAdmin, isAccountBlocked) VALUES (?, ?, ?, ?, 0, 0);", [username, hash, classa, course], (err, result) => {
+            if(err){
+              console.log(err);
+            }
+
+            console.log("Hashed password: " + hash)
+            res.render("adminpanel.ejs");
+          });
+        })
+      }
+    })
+  }
+  catch(err){
+    console.log(err);
+  }
+});
 
 // TODO: Make it work
 // app.get("/notes", (req, res) => {
@@ -134,22 +191,9 @@ let con = mysql.createPool({
     connectionLimit: 10
 }); 
 
-
 app.listen(port, () => {
   console.log(`Server running on port ${port}`);
 });
-
-
-
-
-
-
-
-
-
-
-
-
 
 //DEBUG QUERY - USE ONLY WHEN SOMETHING'S WRONG 
 // conn.query(debugsql, function(err, result){

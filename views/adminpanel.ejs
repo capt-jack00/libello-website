@@ -40,12 +40,30 @@
         padding-top: 1px;
     }
 
+    form{
+        margin: 50px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        border: 1px solid black;
+        padding: 50px;
+    }
+
+    label{
+        margin-top: 10px;
+    }
+
+    .btn{
+        margin-top: 10px;
+    }
+
 </style>
 <body>
     <!-- TODO: Add admin panel features like: adding users, disabling accounts, reseting passwords ect. -->
     <!-- TODO: Adding users has to be done with use of bcrypt to encrypt passwords -->
     <div class="container">
-        <b><h2>Panel administratora</h2></b> 
+        <b><h1>Panel administratora</h1></b> 
         <h4>Zarządzaj użytkownikami</h4>
 
         <table>
@@ -54,6 +72,7 @@
                 <th>Klasa</th>
                 <th>Kierunek</th>
                 <th>Admin</th>
+                <th>Status konta</th>
             </tr>
             <% users.forEach(u => { %>
                 <tr>
@@ -62,20 +81,53 @@
                     <!-- TODO: Clean up the code -->
                     <% if(u.course === 1){ %>
                         <th>Informatyk</th>
-                    <% } %>
-                    <% if(u.course === 3){ %>
+                    <% } else if(u.course === 2){ %>
                         <th>Logistyk</th>
+                    <% } else { %>
+                        <th style="color: red;">Nie podano</th>
                     <% } %>
                     
                     <% if(u.isAdmin === 1) { %>
                         <th>Tak</th>
-                    <% } %>
-                    <% if(u.isAdmin === 0) { %>
+                    <% } else { %>
                         <th>Nie</th>
+                    <% } %>
+
+                    <% if(u.isAccountBlocked === 1){ %>
+                        <th style="color: red;">Zablokowane</th>
+                    <% } else { %>
+                        <th style="color: green;">Aktywne</th>
                     <% } %>
                 </tr>
             <% }) %>
         </table>
+
+        <!-- TODO: Add password confirmation -->
+        <form method="post">
+            <h4 style="margin: 0; margin-bottom: 10px;">Dodaj nowego użytkownika</h4>
+            <% if (typeof error !== 'undefined' && error) { %>
+                <div class="alert alert-danger" role="alert">
+                    <%= error %>
+                </div>
+            <% } %>
+            <label for="username">Nazwa użytkownika: </label>
+            <input  type="text" id="username" name="username">
+
+            <label for="password">Hasło: </label>
+            <input type="password" id="password" name="password">
+
+            <label for="classa">Klasa: </label>
+            <input type="number" id="classa" name="classa" max="5" min="1">
+
+            <label for="course">Kierunek: </label>
+            <select id="course" name="course">
+                <option value="0">-- WYBIERZ --</option>
+                <option value="1">Informatyk</option>
+                <option value="2">Logistyk</option>
+            </select>
+
+            <input type="submit" class="btn btn-primary" value="Dodaj użytkownika">
+        </form>
     </div>
 </body>
 </html>

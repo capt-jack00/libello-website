@@ -1,4 +1,0 @@
-WARNING! - DO NOT UPLOAD THIS FILE TO THE SERVER, IT CONTAINS SENSITIVE DATA
-
-In mysql database, when checking if student is on course "Technik informatyk" or "Technik logistyk" we are using simple numbers (in this case just in range 1-2)
-where 1 represents "Technik informatyk" and 2 represents "Technik logistyk" 
