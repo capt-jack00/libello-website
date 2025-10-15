@@ -57,28 +57,34 @@ app.post("/login", (req, res) => {
       }
       
       if(result.length > 0){
-      const user = result[0];
-      const storedPassword = user.password;
-      const isAdmin = user.isAdmin;
+        const user = result[0];
+        const storedPassword = user.password;
+        const isAdmin = user.isAdmin;
 
-        if(storedPassword === password){
-          if(isAdmin == 1){
-            res.render("notes.ejs", {isAdmin: true, file: "plik.pdf"});
-            // console.log(req.session);
+        bcrypt.compare(password, storedPassword, (err, result) => {
+          if(err){
+            console.log("Something went wrong " + err)
+          }
+
+          if(result){
+            if(isAdmin == 1){
+              res.render("notes.ejs", {isAdmin: true, file: "plik.pdf"});
+            }
+            else{
+              res.render("notes.ejs", {isAdmin: false, file: "There's no file to display"});
+            }
+
+            req.session.user = {
+              username: user.username,
+              role: user.isAdmin
+            };
+            console.log("Login for " + username + " success")
           }
           else{
-            res.render("notes.ejs", {isAdmin: false, file: "There's no file to display"});
+            res.render("login.ejs", { error: "Password incorrect" });
+            console.log("Login for " + username + " failed")
           }
-
-          req.session.user = {
-            username: user.username,
-            role: user.isAdmin
-          };
-        }
-        else{
-          res.render("login.ejs", { error: "Password incorrect" });
-          // console.log("Password incorrect");
-        }
+        });
       }
       else{
         res.render("login.ejs", { error: "User not found" });
