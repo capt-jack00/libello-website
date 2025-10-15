@@ -138,6 +138,7 @@ app.post("/adminpanel", (req, res) => {
       }
 
       if(result.length > 0){
+        //TODO: Simplify
         con.query("SELECT * FROM uzytkownicy", (err, result) => {
           if(err){
             console.log(err);
@@ -159,7 +160,17 @@ app.post("/adminpanel", (req, res) => {
             }
 
             console.log("Hashed password: " + hash)
-            res.render("adminpanel.ejs");
+
+            //TODO: Simplify
+            con.query("SELECT * FROM uzytkownicy", (err, result) => {
+              if(err){
+                  console.log(err);
+                  return;
+                }
+              
+              //TODO: Add option to inform the admin that adding new user was succesful. (Probably will need to rewrite the code for render amidnpanel.ejs)
+              res.render("adminpanel.ejs", {users: result})
+            });
           });
         })
       }
