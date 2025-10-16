@@ -22,7 +22,21 @@
     }
 </style>
 <body>
-    <h2>YOURE IN!</h2>
+    <!-- TODO: Fix the path handling, error: Cannot GET /pdfs/note2.pdf -->
+    <% notes.forEach(n => {%>
+        <div class="card" style="width: 18rem;">
+          <div class="card-body">
+            <h5 class="card-title"><%= n.title %></h5>
+            <p class="card-text"><%= n.description %></p>
+            <a href="<%= n.path %>" class="btn btn-primary">Otwórz</a>
+          </div>
+        </div>
+    <% }); %>
+
+
+
+
+    <!-- <h2>YOURE IN!</h2>
     <% if (isAdmin) { %>
         <div>
             You're an Admin <br>
@@ -38,7 +52,7 @@
 
     <form action="/logout" method="get">
         <button class="btn btn-danger">Log out</button>
-    </form>
+    </form> -->
 
 </body>
 </html>

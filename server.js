@@ -71,12 +71,19 @@ app.post("/login", (req, res) => {
               res.render("notes.ejs", {isAdmin: true, file: "plik.pdf"});
             }
             else{
-              res.render("notes.ejs", {isAdmin: false, file: "There's no file to display"});
+              con.query("SELECT * FROM notatki WHERE class= ?", [user.class], (err, result) => {
+                if(err){
+                  console.log("Something went wrong while selecting table with notes")
+                }
+              
+                res.render("notes.ejs", {isAdmin: false, notes: result});
+              });
             }
 
             req.session.user = {
               username: user.username,
-              role: user.isAdmin
+              role: user.isAdmin,
+              class: user.class 
             };
             console.log("Login for " + username + " success")
           }
@@ -100,6 +107,20 @@ app.post("/login", (req, res) => {
   }
 });
 
+app.get("/notes", (req, res) => {
+  if(req.session.user && req.session.user.role === 1){
+    con.query("SELECT * FROM notatki WHERE class= ?", [user.class], (err, result) => {
+      if(err){
+        console.log("Something went wrong while selecting table with notes")
+      }
+
+      res.render("notes.ejs", {notes: result});
+    });
+  }
+  else{
+    res.redirect("/login")
+  }
+})
 //TODO: Add some way to inform user that he needs to be logged in and have admin priviliegs to view this site
 app.get("/adminpanel", (req, res) => {
   if(req.session.user && req.session.user.role === 1){
