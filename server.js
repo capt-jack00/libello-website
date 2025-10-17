@@ -12,9 +12,14 @@ let loginAttempt;
 const saltRounds = 10;
 const debugsql = "SELECT * FROM uzytkownicy;"
 
+// TODO: Rewiev the code
+const path = require('path');
+const fs = require('fs');
+
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.set('views', __dirname + '/views');
+app.use(express.static(__dirname + '/public'));
 
 // NON-SECURE RENDERS
 app.get("/", (req, res) => {
@@ -68,7 +73,13 @@ app.post("/login", (req, res) => {
 
           if(result){
             if(isAdmin == 1){
-              res.render("notes.ejs", {isAdmin: true, file: "plik.pdf"});
+              con.query("SELECT * FROM notatki WHERE class= ?", [user.class], (err, result) => {
+                if(err){
+                  console.log("Something went wrong while selecting table with notes")
+                }
+              
+                res.render("notes.ejs", {isAdmin: true, notes: result, userName: user.username});
+              });
             }
             else{
               con.query("SELECT * FROM notatki WHERE class= ?", [user.class], (err, result) => {
@@ -76,7 +87,7 @@ app.post("/login", (req, res) => {
                   console.log("Something went wrong while selecting table with notes")
                 }
               
-                res.render("notes.ejs", {isAdmin: false, notes: result});
+                res.render("notes.ejs", {isAdmin: false, notes: result, userName: user.username});
               });
             }
 
@@ -121,6 +132,21 @@ app.get("/notes", (req, res) => {
     res.redirect("/login")
   }
 })
+
+//TODO: Rewiev the code
+app.get('/pdfs/:filename', (req, res) => {
+  if (!req.session.user) {
+    return res.status(403).send('Access denied');
+  }
+
+  const filePath = path.join(__dirname, 'pdfs', req.params.filename);
+  if (!fs.existsSync(filePath)) {
+    return res.status(404).send('File not found');
+  }
+
+  res.sendFile(filePath);
+});
+
 //TODO: Add some way to inform user that he needs to be logged in and have admin priviliegs to view this site
 app.get("/adminpanel", (req, res) => {
   if(req.session.user && req.session.user.role === 1){

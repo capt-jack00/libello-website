@@ -3,56 +3,69 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Libello</title>
 
     <!-- bootstap links -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
 </head>
 <style>
-    body{
+    .container{
         display: flex;
         justify-content: center;
         align-items: center;
-        height: 100vh;
-        flex-direction: column;
+        height: 80vh;
+        flex-direction: row;
     }
+
+    .navbar{
+        margin: 20px;
+        display: flex;
+        justify-content: space-between;
+    }
+
     .btn{
+        margin: 10px;
+    }
+
+    header{
+        border: 2px solid black;
+        top: 0;
+    }
+
+    .card{
         margin: 10px;
     }
 </style>
 <body>
-    <!-- TODO: Fix the path handling, error: Cannot GET /pdfs/note2.pdf -->
-    <% notes.forEach(n => {%>
-        <div class="card" style="width: 18rem;">
-          <div class="card-body">
-            <h5 class="card-title"><%= n.title %></h5>
-            <p class="card-text"><%= n.description %></p>
-            <a href="<%= n.path %>" class="btn btn-primary">Otwórz</a>
-          </div>
-        </div>
-    <% }); %>
-
-
-
-
-    <!-- <h2>YOURE IN!</h2>
-    <% if (isAdmin) { %>
-        <div>
-            You're an Admin <br>
+    <nav class="navbar">
+      <div>
+        <img style="margin: 0; padding: 0;" src="/imgs/logo.svg" alt="Libello" width="360" height="80">
+      </div>
+      <div style="display: flex; flex-direction: row;">
+        <% if(isAdmin){ %>
             <form action="/adminpanel" method="get">
                 <button class="btn btn-primary">Admin panel</button>
             </form>
-        </div>
-    <% } else { %>
-        <div>
-            You're not an Admin
-        </div>
-    <% } %>
-
-    <form action="/logout" method="get">
-        <button class="btn btn-danger">Log out</button>
-    </form> -->
-
+        <% } %>
+            <form action="/logout" method="get">
+                <button class="btn btn-danger">Wyloguj</button>
+            </form>  
+      </div>
+    </nav>
+    <p style="margin-left: 80px;">Zalogowany jako: <%= userName %></p>
+    <div class="container">
+        <% if(notes.length === 0){ %>
+            <p>Nic tu nie ma :0</p>
+        <% } else { notes.forEach(n => {%>
+            <div class="card" style="width: 18rem;">
+              <div class="card-body">
+                <h5 class="card-title"><%= n.title %></h5>
+                <p class="card-text"><%= n.description %></p>
+                <a href="<%= n.path %>" class="btn btn-primary">Otwórz</a>
+              </div>
+            </div>
+        <% })}; %>
+    </div>
 </body>
 </html>
