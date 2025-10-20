@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pl">
 <head>
     <!-- bootstap links -->
     <!--<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
@@ -20,20 +20,35 @@
         </div>
     <% } %>
 </div>
-<div class="login">
-    <form method="post" action="/login">
-        <label for="username">Nazwa użytkownika</label><br>
-        <input type="text" id="username" name="username"><br>
-        <label for="password">Hasło</label><br>
-        <input type="password" id="password" name="password"><br>
-        <input type="submit" id="login-btn" class="btn btn-primary" style="margin-top: 10px;" value="Zaloguj się">
-    </form>
-    <p>To tylko wersja beta strony, chcesz wziąć udział w testach? Napisz na szkola@dominikbednorz.pl</p>
-    <p>Oryginalna strona pod adresem: <a href="https://serwer2504295.home.pl/">https://serwer2504295.home.pl/</a></p>
+<div class="card-flip-container">
+    <div class="card-flip">
+        <div class="card-front">
+            <h2>Kliknij aby się zalogować</h2>
+            <p>Kliknij aby odwrócić kartę</p>
+        </div>
+        <div class="card-back">
+            <form>
+                <h2>Zaloguj się</h2>
+                <input type="login" placeholder="Login" required>
+                <input type="password" placeholder="Hasło" required>
+                <button type="submit">Login</button>
+                <p>Oryginalna strona pod adresem: <a href="https://serwer2504295.home.pl/">https://serwer2504295.home.pl/</a></p>
+            </form>
+        </div>
+    </div>
 </div>
-</body>
+<script>
+    document.querySelector('.card-flip').addEventListener('click', function() {
+        this.classList.toggle('flipped');
+    });
 
-<footer>
-    <p>&copy Strona opracowana przez Dominika Bednorza oraz Łukasza Świerc</p>
-</footer>
+    // Prevent form submission for demo purposes
+    document.querySelectorAll('form').forEach(form => {
+        form.addEventListener('submit', (e) => {
+            e.preventDefault();
+            alert('Login attempted');
+        });
+    });
+</script>
+</body>
 </html>
