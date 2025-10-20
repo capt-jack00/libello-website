@@ -23,64 +23,61 @@ body {
 .container {
     visibility: hidden;
 }
-.card-flip-container {
-    perspective: 1000px;
+.split-form {
+    display: flex;
+    background: white;
+    border-radius: 20px;
+    overflow: hidden;
     width: 100%;
-    max-width: 400px;
+    max-width: 800px;
     margin: 0 auto;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
 }
 
-.card-flip {
-    position: relative;
-    width: 100%;
-    height: 400px;
-    text-align: center;
-    transition: transform 0.8s;
-    transform-style: preserve-3d;
-    cursor: pointer;
-}
-
-.card-flip.flipped {
-    transform: rotateY(180deg);
-}
-
-.card-front, .card-back {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    backface-visibility: hidden;
+.split-form .image-side {
+    flex: 1;
+    background: linear-gradient(45deg, blue, lightskyblue);
+    padding: 2rem;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    padding: 2rem;
-    background: white;
-    border-radius: 15px;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-}
-
-.card-back {
-    background: linear-gradient(135deg, #6366F1, #A855F7);
     color: white;
-    transform: rotateY(180deg);
+    text-align: center;
 }
 
-.card-flip input {
+.split-form .form-side {
+    flex: 1;
+    padding: 3rem;
+}
+
+.split-form input {
     width: 100%;
-    padding: 0.8rem;
+    padding: 1rem;
     margin: 0.5rem 0;
-    border: 1px solid #ddd;
-    border-radius: 5px;
+    border: none;
+    border-bottom: 2px solid #eee;
     outline: none;
+    transition: border-color 0.3s;
 }
 
-.card-flip button {
+.split-form input:focus {
+    border-bottom-color: lightskyblue;
+}
+
+.split-form button {
     width: 100%;
-    padding: 0.8rem;
-    margin-top: 1rem;
-    border: none;
-    border-radius: 5px;
-    background: #6366F1;
+    padding: 1rem;
+    margin-top: 1.5rem;
+    background: blue;
     color: white;
+    border: none;
+    border-radius: 25px;
     cursor: pointer;
+    font-weight: bold;
+    transition: transform 0.3s;
+}
+
+.split-form button:hover {
+    transform: translateY(-2px);
 }
