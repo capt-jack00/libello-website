@@ -12,7 +12,6 @@ let loginAttempt;
 const saltRounds = 10;
 const debugsql = "SELECT * FROM uzytkownicy;"
 
-// TODO: Rewiev the code
 const path = require('path');
 const fs = require('fs');
 
@@ -170,18 +169,23 @@ app.get("/adminpanel", (req, res) => {
 app.post("/adminpanel", (req, res) => {
   const username = req.body.username;
   const password = req.body.password;
+  const passwordConfirmation = req.body.passwordConfirmation;
   const classa = req.body.classa;
   const course = req.body.course; 
 
   if (!username || !password || !classa || !course) {
     con.query("SELECT * FROM uzytkownicy", (err, result) => {
-      if(err){
-        console.log(err);
-        return;
-      }
-      
+      if(err) return console.log(err);
       return res.render("adminpanel.ejs", {users: result, error: "Wszystkie pola muszą być wypełnione!"});
     }); 
+  }
+
+  //TODO: FIXME: Crashes everytime it executes
+  if(password != passwordConfirmation){
+    con.query("SELECT * FROM uzytkownicy", (err, result) => {
+      if(err) return console.log(err);
+      return res.render("adminpanel.ejs", {users: result, error: "Hasła muszą być takie same!"});
+    });  
   }
 
   try{
