@@ -1,0 +1,5 @@
+1. Add a light/dark mode switch for the site
+2. Update the look for login page
+3. Notes should be displayed only for specified course (right now they are displaying for everyone with the same class)
+4. Add class administrator (for adding and removing notes) 
+5. Add "Back" buttons that will allow users to come back to previous site
