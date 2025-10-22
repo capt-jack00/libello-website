@@ -20,6 +20,15 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.set('views', __dirname + '/views');
 app.use(express.static(__dirname + '/public'));
 
+//SESSION
+app.use(session({
+    secret: process.env.SESSION_SECRET,
+    resave: false,
+    saveUninitialized: false,
+    cookie: { maxAge: 1000 * 60 * 60}
+    }
+));
+
 // NON-SECURE RENDERS
 app.get("/", (req, res) => {
   if(parserAttempt === 1){
@@ -34,17 +43,14 @@ app.get("/login", (req, res) => {
     res.render("error.ejs");
   }
 
+  //TODO: Debug and fix
+  // if(req.session.user){
+  //   res.redirect("/notes");
+  //   return;
+  // }
+
   res.render("login.ejs");
 });
-
-// SESSION
-app.use(session({
-    secret: process.env.SESSION_SECRET,
-    resave: false,
-    saveUninitialized: false,
-    cookie: { maxAge: 1000 * 60 * 60}
-    }
-));
 
 // SECURED RENDERS
 app.get('/logout', (req, res) => {
@@ -58,10 +64,6 @@ app.get('/logout', (req, res) => {
 });
 
 app.post("/login", (req, res) => {
-  if(parserAttempt === 1){
-    res.render("error.ejs");
-  }
-
   const username = req.body.username;
   const password = req.body.password;
 
@@ -105,7 +107,8 @@ app.post("/login", (req, res) => {
             req.session.user = {
               username: user.username,
               role: user.isAdmin,
-              class: user.class 
+              class: user.class,
+              course: user.course
             };
             console.log("Login for " + username + " success")
           }
@@ -130,10 +133,12 @@ app.post("/login", (req, res) => {
 });
 
 app.get("/notes", (req, res) => {
+  const user = req.session.user;
   if(req.session.user && req.session.user.role === 1){
-    con.query("SELECT * FROM notatki WHERE class= ?", [user.class], (err, result) => {
+    con.query("SELECT * FROM notatki WHERE class = ? AND course = ?", [user.class, user.course], (err, result) => {
       if(err){
-        console.log("Something went wrong while selecting table with notes")
+        console.log("Something went wrong while selecting table with notes" + err);
+        return;
       }
 
       res.render("notes.ejs", {notes: result});
@@ -169,9 +174,6 @@ app.get("/adminpanel", (req, res) => {
 
       res.render("adminpanel.ejs", {users: result})
     });
-
-    // const [usersAdminQuery] = con.query("SELECT * FROM uzytkownicy;");
-    // res.render("adminpanel.ejs", {users: result});
   }
   else{
     res.redirect("/login")
@@ -190,14 +192,15 @@ app.post("/adminpanel", (req, res) => {
       if(err) return console.log(err);
       return res.render("adminpanel.ejs", {users: result, error: "Wszystkie pola muszą być wypełnione!"});
     }); 
+    return;
   }
 
-  //TODO: FIXME: Crashes everytime it executes
   if(password != passwordConfirmation){
     con.query("SELECT * FROM uzytkownicy", (err, result) => {
       if(err) return console.log(err);
       return res.render("adminpanel.ejs", {users: result, error: "Hasła muszą być takie same!"});
     });  
+    return;
   }
 
   try{
@@ -207,7 +210,6 @@ app.post("/adminpanel", (req, res) => {
       }
 
       if(result.length > 0){
-        //TODO: Simplify
         con.query("SELECT * FROM uzytkownicy", (err, result) => {
           if(err){
             console.log(err);
@@ -230,15 +232,13 @@ app.post("/adminpanel", (req, res) => {
 
             console.log("Hashed password: " + hash)
 
-            //TODO: Simplify
             con.query("SELECT * FROM uzytkownicy", (err, result) => {
-              if(err){
+                if(err){
                   console.log(err);
                   return;
                 }
               
-              //TODO: Add option to inform the admin that adding new user was succesful. (Probably will need to rewrite the code for render amidnpanel.ejs)
-              res.render("adminpanel.ejs", {users: result})
+              res.render("adminpanel.ejs", {users: result, error: "registerSuccess"})
             });
           });
         })
@@ -259,18 +259,6 @@ app.post("/verysecretendpointMetallica123", (req, res) => {
   parserAttempt = 1;
 });
 
-// TODO: Make it work
-// app.get("/notes", (req, res) => {
-//   const isAdmin = req.query.isAdmin;
-//   if(req.session.user){
-//     res.render("notes.ejs", {isAdmin});
-//   }
-//   else{
-//     res.redirect("/login")
-//   }
-// });
-
-
 // DATABASE
 let con = mysql.createPool({
     host: "localhost",
@@ -283,9 +271,3 @@ let con = mysql.createPool({
 app.listen(port, () => {
   console.log(`Server running on port ${port}`);
 });
-
-//DEBUG QUERY - USE ONLY WHEN SOMETHING'S WRONG 
-// conn.query(debugsql, function(err, result){
-//     if(err) throw err;
-//     console.log(result);
-// });

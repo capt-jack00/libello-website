@@ -102,13 +102,18 @@
             <% }) %>
         </table>
 
-        <!-- TODO: Add password confirmation -->
         <form method="post">
             <h4 style="margin: 0; margin-bottom: 10px;">Dodaj nowego użytkownika</h4>
             <% if (typeof error !== 'undefined' && error) { %>
+                <% if(error === "registerSuccess"){ %>
+                    <div class="alert alert-success">
+                        Rejestrowanie użytkownika przebiegło pomyślnie
+                    </div>
+                <% } else { %>
                 <div class="alert alert-danger" role="alert">
                     <%= error %>
                 </div>
+                <% } %>
             <% } %>
             
             <label for="username">Nazwa użytkownika: </label>
