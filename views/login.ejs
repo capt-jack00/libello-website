@@ -1,38 +1,64 @@
 <!DOCTYPE html>
 <html lang="pl">
 <head>
-    <!-- bootstap links -->
-    <!--<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>-->
-    <link href="/css/login.css" rel="stylesheet">
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Libello - Zaloguj się</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Libello - logowanie</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet"/>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet"/>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+    <style>
+        body {
+            background-image: url("/imgs/wall_login.jpg");
+            backdrop-filter: blur(10px);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .logo {
+            margin-bottom: 2rem;
+            background-color: transparent;
+        }
+
+        .login-card {
+            background: #fff;
+            border-radius: 15px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+            width: 100%;
+            max-width: 380px;
+            padding: 2rem;
+        }
+
+        .form-control:focus {
+            border-color: #6610f2;
+            box-shadow: 0 0 0 0.2rem rgba(102, 16, 242, 0.25);
+        }
+    </style>
 </head>
+
 <body>
-<header>
-    <img src="/imgs/logo_login.svg" alt="logo">
-</header>
-<div class="container">
-    <% if (typeof error !== 'undefined' && error) { %>
-        <div class="alert alert-danger" role="alert">
-            <%= error %>
-        </div>
-    <% } %>
+<div class="logo text-center">
+    <img src="/imgs/logo_blank.jpg" alt="logo" width="269px" height="88px">
 </div>
-<div class="split-form">
-    <div class="image-side">
-        <h2>Witam ponownie!</h2>
-        <p>Podaj dane aby się zalogować.</p>
-    </div>
-    <div class="form-side">
-        <h2>Zaloguj się</h2>
-        <form>
-            <input type="text" id="username" placeholder="Login" required>
-            <input type="password" id="password" placeholder="Hasło" required>
-            <button type="submit">Zaloguj</button>
-        </form>
-    </div>
+
+<div class="login-card">
+    <h4 class="text-center mb-4">Zaloguj się</h4>
+    <form>
+        <div class="mb-3">
+            <input type="text" class="form-control" id="username" name="username" placeholder="Login" required/>
+        </div>
+        <div class="mb-3">
+            <input type="password" class="form-control" id="password" name="password" placeholder="Hasło" required/>
+        </div>
+        <div class="d-grid">
+            <button type="submit" class="btn btn-primary btn-lg">
+                Zaloguj się
+            </button>
+        </div>
+    </form>
 </div>
 </body>
 </html>
