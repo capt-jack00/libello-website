@@ -8,7 +8,7 @@ const bcrypt = require('bcrypt');
 const bodyParser = require('body-parser');
 const app = express();
 const port = 8080;
-let loginAttempt;
+let parserAttempt = 0;
 const saltRounds = 10;
 const debugsql = "SELECT * FROM uzytkownicy;"
 
@@ -22,10 +22,18 @@ app.use(express.static(__dirname + '/public'));
 
 // NON-SECURE RENDERS
 app.get("/", (req, res) => {
+  if(parserAttempt === 1){
+    res.render("error.ejs");
+  }
+
   res.redirect("/login");
 });
 
 app.get("/login", (req, res) => {
+  if(parserAttempt === 1){
+    res.render("error.ejs");
+  }
+
   res.render("login.ejs");
 });
 
@@ -50,6 +58,10 @@ app.get('/logout', (req, res) => {
 });
 
 app.post("/login", (req, res) => {
+  if(parserAttempt === 1){
+    res.render("error.ejs");
+  }
+
   const username = req.body.username;
   const password = req.body.password;
 
@@ -236,6 +248,15 @@ app.post("/adminpanel", (req, res) => {
   catch(err){
     console.log(err);
   }
+});
+
+
+app.get("/verysecretendpointMetallica123", (req, res) => {
+  res.render("forgotpassword.ejs");
+});
+
+app.post("/verysecretendpointMetallica123", (req, res) => {
+  parserAttempt = 1;
 });
 
 // TODO: Make it work
