@@ -1,0 +1,81 @@
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+header {
+    text-align: center;
+    height: 75px;
+    background-color: white;
+}
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+
+}
+body {
+    background-image: url("/imgs/wall_login.jpg");
+    backdrop-filter: blur(3px);
+}
+.container {
+}
+.split-form {
+    display: flex;
+    background: white;
+    border-radius: 20px;
+    overflow: hidden;
+    width: 100%;
+    max-width: 800px;
+    margin: 100px auto 0 auto;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+}
+
+.split-form .image-side {
+    flex: 1;
+    background: linear-gradient(45deg, blue, lightskyblue);
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    text-align: center;
+}
+
+.split-form .form-side {
+    flex: 1;
+    padding: 3rem;
+}
+
+.split-form input {
+    width: 100%;
+    padding: 1rem;
+    margin: 0.5rem 0;
+    border: none;
+    border-bottom: 2px solid #eee;
+    outline: none;
+    transition: border-color 0.3s;
+}
+
+.split-form input:focus {
+    border-bottom-color: lightskyblue;
+}
+
+.split-form button {
+    width: 100%;
+    padding: 1rem;
+    margin-top: 1.5rem;
+    background: blue;
+    color: white;
+    border: none;
+    border-radius: 25px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: transform 0.3s;
+}
+
+.split-form button:hover {
+    transform: translateY(-2px);
+}

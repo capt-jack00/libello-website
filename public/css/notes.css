@@ -1,0 +1,26 @@
+.container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 80vh;
+    flex-direction: row;
+}
+
+.navbar{
+    margin: 20px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.btn{
+    margin: 10px;
+}
+
+header{
+    border: 2px solid black;
+    top: 0;
+}
+
+.card{
+    margin: 10px;
+}

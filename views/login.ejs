@@ -1,52 +1,64 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pl">
 <head>
-    <!-- bootstap links -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Libello - logowanie</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet"/>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet"/>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+    <style>
+        body {
+            background-image: url("/imgs/wall_login.jpg");
+            backdrop-filter: blur(3px);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
 
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Libello - Zaloguj się</title>
+        .logo {
+            margin-bottom: 2rem;
+            background-color: transparent;
+        }
+
+        .login-card {
+            background: #fff;
+            border-radius: 15px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+            width: 100%;
+            max-width: 380px;
+            padding: 2rem;
+        }
+
+        .form-control:focus {
+            border-color: #6610f2;
+            box-shadow: 0 0 0 0.2rem rgba(102, 16, 242, 0.25);
+        }
+    </style>
 </head>
-<style>
-    body{
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        height: 100vh;
-    }
 
-    .container{
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        flex-direction: column;
-    }
-
-    p{
-        margin: 0;
-        margin-top: 10px;
-    }
-</style>
 <body>
-    <div class="container">
-        <% if (typeof error !== 'undefined' && error) { %>
-            <div class="alert alert-danger" role="alert">
-                <%= error %>
-            </div>
-        <% } %>
+<div class="logo text-center">
+    <img src="/imgs/logo_blank.jpg" alt="logo" width="269px" height="88px">
+</div>
 
-        <form method="post" action="/login">
-            <label for="username">Nazwa użytkownika</label><br>
-            <input type="text" id="username" name="username"><br>
-            <label for="password">Hasło</label><br>
-            <input type="password" id="password" name="password"><br>
-            <input type="submit" id="login-btn" class="btn btn-primary" style="margin-top: 10px;" value="Zaloguj się">
-        </form>
-        <p>To tylko wersja beta strony, chcesz wziąć udział w testach? Napisz na szkola@dominikbednorz.pl</p>
-        <p>Oryginalna strona pod adresem: <a href="https://serwer2504295.home.pl/">https://serwer2504295.home.pl/</a></p>
-        
-    </div>
+<div class="login-card">
+    <h4 class="text-center mb-4">Zaloguj się</h4>
+    <form method="POST">
+        <div class="mb-3">
+            <input type="text" class="form-control" id="username" name="username" placeholder="Login" required/>
+        </div>
+        <div class="mb-3">
+            <input type="password" class="form-control" id="password" name="password" placeholder="Hasło" required/>
+        </div>
+        <div class="d-grid">
+            <button type="submit" class="btn btn-primary btn-lg">
+                Zaloguj się
+            </button>
+        </div>
+    </form>
+</div>
 </body>
 </html>
