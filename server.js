@@ -43,23 +43,38 @@ app.get("/login", (req, res) => {
     res.render("error.ejs");
   }
 
-  //TODO: Debug and fix
-  // if(req.session.user){
-  //   res.redirect("/notes");
-  //   return;
-  // }
-
-  res.render("login.ejs");
+  if(req.session.user){
+    const user = req.session.user;
+    con.query("SELECT * FROM notatki WHERE class = ? AND course = ?", [user.class, user.course], (err, result) => {
+      if(err){
+        console.log("Something went wrong while selecting table with notes" + err);
+        return;
+      }
+      if(user.isAdmin === 1){
+        res.render("notes.ejs", {notes: result, userName: user.username, isAdmin: true});
+        return;
+      }
+      else{
+        res.render("notes.ejs", {notes: result, userName: user.username, isAdmin: false});
+        return;
+      }
+    });
+  } 
+  else{
+    res.render("login.ejs")
+  }
 });
 
 // SECURED RENDERS
 app.get('/logout', (req, res) => {
+  const user = req.session && req.session.user;
   req.session.destroy( err => {
     if(err){
       console.log("Session destruction error: " + err);
       return res.redirect("/");
     }
-    res.redirect("/login")
+    console.log("Session destruction for " + user.username + " succeded");
+    res.redirect("/login");
   });
 });
 
@@ -113,13 +128,13 @@ app.post("/login", (req, res) => {
             console.log("Login for " + username + " success")
           }
           else{
-            res.render("login.ejs", { error: "Password incorrect" });
+            res.render("login.ejs", { error: "Nieprawidłowe hasło" });
             console.log("Login for " + username + " failed")
           }
         });
       }
       else{
-        res.render("login.ejs", { error: "User not found" });
+        res.render("login.ejs", { error: "Nie znaleziono użytkownika" });
         // console.log("User not found");
       }
     });

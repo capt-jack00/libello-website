@@ -45,6 +45,11 @@
 </div>
 
 <div class="login-card">
+     <% if (typeof error !== 'undefined' && error) { %>
+            <div class="alert alert-danger" role="alert" style="display: flex; justify-content: center; align-items: center;">
+                <%= error %>
+            </div>
+    <% } %>
     <h4 class="text-center mb-4">Zaloguj się</h4>
     <form method="POST">
         <div class="mb-3">
