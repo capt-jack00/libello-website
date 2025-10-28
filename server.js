@@ -83,10 +83,10 @@ app.post("/login", (req, res) => {
   const password = req.body.password;
 
   try{
-    const result = con.query("SELECT * FROM uzytkownicy WHERE username = ?;", [username], (err, result) =>{
+    con.query("SELECT * FROM uzytkownicy WHERE username = ?;", [username], (err, result) =>{
       if (err) {
         console.log(err);
-        return;
+        return res.status(500).send("Database error");
       }
       
       if(result.length > 0){
@@ -97,11 +97,18 @@ app.post("/login", (req, res) => {
         bcrypt.compare(password, storedPassword, (err, result) => {
           if(err){
             console.log("Something went wrong " + err)
+            return res.status(500).send("Internal server error");
           }
 
           if(result){
+            req.session.user = {
+              username: user.username,
+              role: user.isAdmin,
+              class: user.class,
+              course: user.course
+            };
             if(isAdmin == 1){
-              con.query("SELECT * FROM notatki WHERE class= ?", [user.class], (err, result) => {
+              con.query("SELECT * FROM notatki WHERE class = ? AND course = ?", [user.class, user.course], (err, result) => {
                 if(err){
                   console.log("Something went wrong while selecting table with notes")
                 }
@@ -119,12 +126,7 @@ app.post("/login", (req, res) => {
               });
             }
 
-            req.session.user = {
-              username: user.username,
-              role: user.isAdmin,
-              class: user.class,
-              course: user.course
-            };
+            
             console.log("Login for " + username + " success")
           }
           else{
