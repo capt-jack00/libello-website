@@ -93,6 +93,12 @@ app.post("/login", (req, res) => {
         const user = result[0];
         const storedPassword = user.password;
         const isAdmin = user.isAdmin;
+        const isAccountBlocked = user.isAccountBlocked;
+
+        if(isAccountBlocked == 1){
+          console.log("Login attempt for blocked account " + username);
+          return res.render("login.ejs", { error: "Konto zablokowane. Skontaktuj się z administratorem." });
+        }
 
         bcrypt.compare(password, storedPassword, (err, result) => {
           if(err){
